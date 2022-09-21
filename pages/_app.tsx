@@ -8,9 +8,14 @@ import theme from "../src/config/theme";
 import createEmotionCache from "../src/config/createEmotionCache";
 import { Provider } from "react-redux";
 import { store } from "../src/store/store";
-import WithAuth from "../src/layout/withAuth";
 import { NextPageWithLayout } from "../src/layout/types";
-
+import dynamic from "next/dynamic";
+const AuthProvider = dynamic(
+  () => import("../src/components/AuthProvider.tsx"),
+  {
+    ssr: false,
+  }
+);
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -22,9 +27,13 @@ type AppPropsWithLayout = MyAppProps & {
   Component: NextPageWithLayout;
 };
 export default function MyApp(props: AppPropsWithLayout) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const {
+    Component,
+    emotionCache = clientSideEmotionCache,
+    pageProps,
+    router,
+  } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
-
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -34,7 +43,9 @@ export default function MyApp(props: AppPropsWithLayout) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Provider store={store}>
-          {getLayout(<Component {...pageProps} />)}
+          <AuthProvider router={router}>
+            {getLayout(<Component {...pageProps} />)}
+          </AuthProvider>
         </Provider>
       </ThemeProvider>
     </CacheProvider>
