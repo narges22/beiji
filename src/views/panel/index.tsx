@@ -7,7 +7,6 @@ const Panel = () => {
   const [showToast, setShowToast] = useState<boolean>(false);
   const router = useRouter();
   useEffect(() => {
-    console.log(router.query.login);
     if (router.query.login) setShowToast(true);
   }, []);
 
