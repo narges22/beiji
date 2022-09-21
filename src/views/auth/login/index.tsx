@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Alert, Box, Button, Snackbar } from "@mui/material";
 import { red } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
@@ -13,6 +13,7 @@ const Login: NextPageWithLayout = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+
   const [user, setUser] = React.useState<IUser>({
     password: "",
     email: "",
@@ -37,14 +38,16 @@ const Login: NextPageWithLayout = () => {
 
   const onSubmit = () => {
     const result = validate(user);
-    console.log(result.keys > 0);
     if (Object.keys(result).length > 0) {
       setErros(result);
     } else {
       setLoading(true);
       dispatch(addUser(user));
       setTimeout(() => {
-        router.push("/panel");
+        router.push({
+          pathname: "/panel",
+          query: { login: true },
+        });
       }, 3000);
     }
   };
