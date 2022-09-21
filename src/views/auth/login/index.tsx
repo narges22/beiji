@@ -1,4 +1,5 @@
 import { Box, Button } from "@mui/material";
+import { red } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -6,12 +7,18 @@ import { useDispatch } from "react-redux";
 import Loading from "../../../components/Loading";
 import { NextPageWithLayout } from "../../../layout/types";
 import { addUser, IUser } from "../../../store/user";
+import { validate } from "../../../utils";
 
 const Login: NextPageWithLayout = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = React.useState<IUser>({
+    password: "",
+    email: "",
+  });
+
+  const [errors, setErros] = React.useState<Record<string, string>>({
     password: "",
     email: "",
   });
@@ -29,11 +36,17 @@ const Login: NextPageWithLayout = () => {
   };
 
   const onSubmit = () => {
-    setLoading(true);
-    dispatch(addUser(user));
-    setTimeout(() => {
-      router.push("/panel");
-    }, 3000);
+    const result = validate(user);
+    console.log(result.keys > 0);
+    if (Object.keys(result).length > 0) {
+      setErros(result);
+    } else {
+      setLoading(true);
+      dispatch(addUser(user));
+      setTimeout(() => {
+        router.push("/panel");
+      }, 3000);
+    }
   };
 
   if (loading) {
@@ -41,32 +54,38 @@ const Login: NextPageWithLayout = () => {
   }
 
   return (
-    <Box>
-      <div>
+    <Box sx={{ p: 1, width: "100%" }}>
+      <Box sx={{ p: 1 }}>
         <TextField
+          fullWidth
           value={user.email}
           onChange={(e) => onChangeFrom("email", e)}
           id="email"
           label="email"
           variant="outlined"
           type={"email"}
+          error={!!errors.email}
+          helperText={errors.email}
         />
-      </div>
-      <div>
+      </Box>
+      <Box sx={{ p: 1 }}>
         <TextField
+          fullWidth
           value={user.password}
           onChange={(e) => onChangeFrom("password", e)}
           id="password"
           label="password"
           variant="outlined"
           type={"password"}
+          error={!!errors.password}
+          helperText={errors.password}
         />
-      </div>
-      <div>
-        <Button variant="contained" type="submit" onClick={onSubmit}>
+      </Box>
+      <Box sx={{ p: 1 }}>
+        <Button fullWidth variant="contained" type="submit" onClick={onSubmit}>
           login
         </Button>
-      </div>
+      </Box>
     </Box>
   );
 };
