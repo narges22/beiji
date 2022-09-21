@@ -1,8 +1,8 @@
 import { ReactElement } from "react";
-import WithAuth from "../../src/layout/withAuth";
+import AuthLayout from "../../src/layout/AuthLayout";
 import SignUp from "../../src/views/auth/signUp";
 
 SignUp.getLayout = function getLayout(page: ReactElement) {
-  return <WithAuth>{page}</WithAuth>;
+  return <AuthLayout>{page}</AuthLayout>;
 };
 export default SignUp;
