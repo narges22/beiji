@@ -31,8 +31,7 @@ const WithAuth: FC<IProps> = ({ children }) => {
       <Grid container justifyContent={"center"}>
         <Grid item md={6} xs={10}>
           <Paper elevation={3} sx={{ p: 3, m: 5, ...paper }}>
-            <Typography variant="h3">Merhaba</Typography>
-            <Typography variant="caption">some text</Typography>
+            <Typography variant="h5">Merhaba</Typography>
             <Box
               sx={{
                 width: "100%",
@@ -41,10 +40,12 @@ const WithAuth: FC<IProps> = ({ children }) => {
                 alignItems: "center",
               }}
             >
-              <Tabs value={value} onChange={handleChange}>
-                <Tab label="login" />
-                <Tab label="sign up" />
-              </Tabs>
+              <Box sx={{ pt: 2, pb: 2 }}>
+                <Tabs value={value} onChange={handleChange}>
+                  <Tab label="login" />
+                  <Tab label="sign up" />
+                </Tabs>
+              </Box>
               <>{children}</>
             </Box>
           </Paper>

@@ -15,6 +15,7 @@ export default function CircularIndeterminate() {
         right: 0,
         bottom: 0,
         background: "white",
+        zIndex: 10,
       }}
     >
       <CircularProgress />
