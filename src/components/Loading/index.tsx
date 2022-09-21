@@ -7,10 +7,14 @@ export default function CircularIndeterminate() {
     <Box
       sx={{
         display: "flex",
-        width: "100vw",
-        height: "100vh",
         alignItems: "center",
         justifyContent: "center",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: "white",
       }}
     >
       <CircularProgress />

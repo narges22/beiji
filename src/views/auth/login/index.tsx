@@ -1,14 +1,16 @@
 import { Box, Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import Loading from "../../../components/Loading";
 import { NextPageWithLayout } from "../../../layout/types";
 import { addUser, IUser } from "../../../store/user";
 
 const Login: NextPageWithLayout = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = React.useState<IUser>({
     password: "",
     email: "",
@@ -27,9 +29,16 @@ const Login: NextPageWithLayout = () => {
   };
 
   const onSubmit = () => {
+    setLoading(true);
     dispatch(addUser(user));
-    router.push("/panel");
+    setTimeout(() => {
+      router.push("/panel");
+    }, 3000);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Box>
